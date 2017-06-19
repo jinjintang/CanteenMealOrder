@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/ordersection">
+    <ImageView android:id="@+id/img"
+        android:layout_margin="5dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:layout_height="wrap_content">
+        <TextView android:text="五食堂"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:id="@+id/name"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView android:id="@+id/text"
+            android:text="下单时间："
+            android:textSize="16sp"
+            android:textColor="#FF3300"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView android:id="@+id/time"
+            android:text="2017-6-1 12：00"
+            android:textSize="16sp"
+            android:textColor="#FF3300"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView android:id="@+id/text2"
+                android:text="总价："
+                android:textSize="16sp"
+                android:textColor="#FF3300"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:id="@+id/price"
+                android:text="￥ 100"
+                android:textSize="16sp"
+                android:textColor="#FF3300"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:id="@+id/delete"
+            android:text="删除订单"
+            android:focusable="false"
+            />
+    </LinearLayout>
+</LinearLayout>
