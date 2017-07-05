@@ -2,13 +2,14 @@ package com.example.jin.canteen.adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.jin.canteen.R;
-import com.example.jin.canteen.ShoppingCartActivity;
+import com.example.jin.canteen.activity.ShoppingCartActivity;
 import com.example.jin.canteen.bean.GoodsItem;
 import com.example.jin.canteen.fragment.AllDishFragment;
 
@@ -80,7 +81,8 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            allDishFragment.onTypeClicked(item.typeId);
+            Log.e("点击种类怎么啥也没有啊","dd");
+           allDishFragment.onTypeClicked(item.typeId);
 
         }
     }

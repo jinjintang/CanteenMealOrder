@@ -1,28 +1,26 @@
 package com.example.jin.canteen.adapter;
 
 
-import android.content.Context;
-import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.example.jin.canteen.R;
+import com.example.jin.canteen.activity.ShoppingCartActivity;
 import com.example.jin.canteen.bean.Comment;
-
 
 import java.util.List;
 
 public class CommentAdapter extends BaseAdapter {
 
     private List<Comment> dataList;
-    private Context mContext;
+    private ShoppingCartActivity mContext;
 
 
-    public CommentAdapter(FragmentActivity mContext, List<Comment> dataList) {
+    public CommentAdapter(ShoppingCartActivity mContext, List<Comment> dataList) {
         super();
         this.dataList=dataList;
         this.mContext = mContext;
@@ -61,6 +59,7 @@ public class CommentAdapter extends BaseAdapter {
             holder = (CommentAdapter.ItemViewHolder) convertView.getTag();
         }
         Comment item = dataList.get(position);
+        Log.e("评论内容"+position,item.getComment());
         holder.bindData(item);
         return convertView;
     }
@@ -86,7 +85,10 @@ public class CommentAdapter extends BaseAdapter {
 
         public void bindData(Comment item){
             this.item = item;
-            content.setText(item.getContent());
+            String s="同学评论："+item.getComment();
+            if(item.getReply()!=null)
+                s+="\n食堂回复："+item.getReply();
+            content.setText(s);
 
 
 

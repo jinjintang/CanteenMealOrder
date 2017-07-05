@@ -2,7 +2,6 @@ package com.example.jin.canteen.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,29 +12,34 @@ import java.util.Map;
 public class SharedHelper {
 
     private Context mContext;
-
+   private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
     public SharedHelper() {
     }
 
     public SharedHelper(Context mContext) {
         this.mContext = mContext;
+        sp= mContext.getSharedPreferences("mysp",0);
+        editor = sp.edit();
     }
 
 
     //定义一个保存数据的方法
     public void save(String username, String passwd) {
-        SharedPreferences sp = mContext.getSharedPreferences("mysp", Context.MODE_WORLD_READABLE);
-        SharedPreferences.Editor editor = sp.edit();
+
         editor.putString("username", username);
         editor.putString("passwd", passwd);
         editor.commit();
-        Toast.makeText(mContext, "信息已写入SharedPreference中", Toast.LENGTH_SHORT).show();
-    }
 
+    }
+    public void clear() {
+        editor.clear().commit();
+
+    }
     //定义一个读取SP文件的方法
     public Map<String, String> read() {
         Map<String, String> data = new HashMap<String, String>();
-        SharedPreferences sp = mContext.getSharedPreferences("mysp", Context.MODE_WORLD_READABLE);
+
         data.put("username", sp.getString("username", ""));
         data.put("passwd", sp.getString("passwd", ""));
         return data;

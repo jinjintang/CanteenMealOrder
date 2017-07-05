@@ -1,38 +1,60 @@
 package com.example.jin.canteen.bean;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jin on 2017/6/15.
  */
 
-public class Canteen implements Serializable{
-    private String picurl;
-    private int canteennum;
-    private String namae;
+public class Canteen {
 
+    /**
+     * id : 47
+     * name : 一食堂
+     * avatar : 0
+     * dishes : [{"id":1,"name":"火锅","avatar":"","introduciton":"还是","price":"10","cid":47,"cname":"一食堂"},{"id":2,"name":"辣子鸡丁","avatar":"","introduciton":"还是","price":"10","cid":47,"cname":"一食堂"}]
+     */
 
-    public String getPicurl() {
-        return picurl;
+    private int id;
+    private String name;
+    private String avatar;
+    private List<Dish> dishes;
+
+    public Canteen(int id, String name, String avatar) {
+        this.id = id;
+        this.name = name;
+        this.avatar = avatar;
     }
 
-    public void setPicurl(String picurl) {
-        this.picurl = picurl;
+    public int getId() {
+        return id;
     }
 
-    public int getCanteennum() {
-        return canteennum;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setCanteennum(int canteennum) {
-        this.canteennum = canteennum;
+    public String getName() {
+        return name;
     }
 
-    public String getNamae() {
-        return namae;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setNamae(String namae) {
-        this.namae = namae;
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 }

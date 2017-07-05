@@ -1,5 +1,6 @@
 package com.example.jin.canteen.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.jin.canteen.R;
-import com.example.jin.canteen.ShoppingCartActivity;
+import com.example.jin.canteen.activity.ShoppingCartActivity;
 import com.example.jin.canteen.bean.GoodsItem;
+import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
     private ShoppingCartActivity mContext;
     private NumberFormat nf;
     private LayoutInflater mInflater;
+
 
     public GoodsAdapter(ArrayList<GoodsItem> dataList, ShoppingCartActivity mContext,TypeAdapter typeadapter) {
         this.dataList = dataList;
@@ -89,6 +93,7 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
         private TextView name,price,tvAdd,tvMinus,tvCount;
         private GoodsItem item;
         private RatingBar ratingBar;
+        private ImageView img;
 
         public ItemViewHolder(View itemView) {
             name = (TextView) itemView.findViewById(R.id.tvName);
@@ -96,7 +101,8 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
             tvCount = (TextView) itemView.findViewById(R.id.count);
             tvMinus = (TextView) itemView.findViewById(R.id.tvMinus);
             tvAdd = (TextView) itemView.findViewById(R.id.tvAdd);
-            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
+            img=(ImageView)itemView.findViewById(R.id.img);
+            //ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             tvMinus.setOnClickListener(this);
             tvAdd.setOnClickListener(this);
         }
@@ -104,7 +110,12 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
         public void bindData(GoodsItem item){
             this.item = item;
             name.setText(item.name);
-            ratingBar.setRating(item.rating);
+          try {
+
+              Picasso.with(mContext).load(item.avator).into(img);
+
+          }catch (Exception e){
+              Log.e("哪个菜出错了",item.name);}
             item.count = mContext.getSelectedItemCountById(item.id);
             tvCount.setText(String.valueOf(item.count));
             price.setText(nf.format(item.price));

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     android:id="@+id/containerLayout"
-    tools:context="com.example.jin.canteen.ShoppingCartActivity">
+    tools:context="com.example.jin.canteen.activity.ShoppingCartActivity">
 
     <!--<include layout="@layout/layout_mian_shopping_cart"-->
         <!--android:layout_width="match_parent"-->

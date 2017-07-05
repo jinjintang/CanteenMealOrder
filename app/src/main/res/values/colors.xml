@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#16A085</color>
+    <color name="colorPrimaryDark">#16A085</color>
+    <color name="colorAccent">#ef9404</color>
+    <color name="colorTopBar">#16A085</color>
+
+    <color name="actionbar_color">#3498DB</color>
+    <color name="drawer_arrow_second_color">#303f9f</color>
+    <color name="blue_dark">#3577e2</color>
+    <color name="blue_double_dark">#0f045c</color>
+    <color name="blue_light">#7f3498db</color>
+    <color name="red">#FFFF0000</color>
+    <color name="grey">#dadada</color>
+    <color name="white">#e7e7e7</color>
+    <color name="pure">#ffffff</color>
+    <color name="green">#16A085</color>
+    <color name="black">#2C3E50</color>
+    <color name="btn_login">#2980B9</color>
+    <color name="btn_login_shadow">#164768</color>
+    <color name="btn_register">#3498DB</color>
+    <color name="btn_register_shadow">#2471a4</color>
+    <color name="btn_viewer">#e9a63d</color>
+    <color name="btn_viewer_shadow">#ef9404</color>
+
 </resources>

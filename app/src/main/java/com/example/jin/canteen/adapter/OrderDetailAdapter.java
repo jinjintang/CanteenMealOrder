@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.example.jin.canteen.R;
 import com.example.jin.canteen.activity.CommentActivity;
 import com.example.jin.canteen.bean.OrderItem;
@@ -87,12 +86,14 @@ public class OrderDetailAdapter extends BaseAdapter {
             amount=(TextView)itemView.findViewById(R.id.amount);
             image=(ImageView) itemView.findViewById(R.id.img);
             button=(Button)itemView.findViewById(R.id.remark);
+
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("MenuId",item.getDishnum());
+                    intent.putExtra("mid",item.getMid());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
 
@@ -105,10 +106,11 @@ public class OrderDetailAdapter extends BaseAdapter {
 
         public void bindData(OrderItem item){
             this.item = item;
-            name.setText(item.getDishname());
-            Picasso.with(mContext).load(item.getDishurl()).into(image);
-            price.setText(item.getAmount()*item.getPrice()+"");
-            amount.setText("× "+item.getAmount());
+
+            name.setText(item.getMname());
+           Picasso.with(mContext).load(item.getMavatar()).into(image);
+            price.setText(item.getNum()*item.getMprice()+"");
+            amount.setText("× "+item.getNum());
 
         }
 

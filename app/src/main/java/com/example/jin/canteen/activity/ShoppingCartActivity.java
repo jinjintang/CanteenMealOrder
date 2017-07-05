@@ -1,4 +1,4 @@
-package com.example.jin.canteen;
+package com.example.jin.canteen.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,53 +18,58 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
-
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jin.canteen.activity.OrderActivity;
-
+import com.example.jin.canteen.R;
 import com.example.jin.canteen.adapter.SelectAdapter;
 import com.example.jin.canteen.bean.GoodsItem;
+import com.example.jin.canteen.bean.submitOrder;
 import com.example.jin.canteen.fragment.AllDishFragment;
 import com.example.jin.canteen.fragment.BaseFragment;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class ShoppingCartActivity extends AppCompatActivity implements View.OnClickListener{
+public class ShoppingCartActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imgCart;
     private ViewGroup anim_mask_layout;
     private RecyclerView rvSelected;
-    private TextView tvCount,tvCost,tvSubmit;
-  //  private BottomSheetLayout bottomSheetLayout;
+    private TextView tvCount, tvCost, tvSubmit;
+
     private View bottomSheet;
 
-
-
-//    private ArrayList<GoodsItem> dataList,typeList;
     private SparseArray<GoodsItem> selectedList;
     private SparseIntArray groupSelect;
-public BaseFragment fr;
-    //    private GoodsAdapter myAdapter;
-    private SelectAdapter selectAdapter;
-//    private TypeAdapter typeAdapter;
+    public BaseFragment fr;
 
+    private SelectAdapter selectAdapter;
+    private double cost;
+    int mmid;
+    int cid;
+    public String cname;
     private NumberFormat nf;
     private Handler mHanlder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopping_cart);
 
+
+        setContentView(R.layout.activity_shopping_cart);
+        mmid = getIntent().getIntExtra("mid", 0);
+        cid=getIntent().getIntExtra("cid",0);
+        cname=getIntent().getStringExtra("cname");
         nf = NumberFormat.getCurrencyInstance();
         nf.setMaximumFractionDigits(2);
         mHanlder = new Handler(getMainLooper());
-//        dataList = GoodsItem.getGoodsList();
-//        typeList = GoodsItem.getTypeList();
+
         selectedList = new SparseArray<>();
         groupSelect = new SparseIntArray();
 
@@ -73,47 +78,47 @@ public BaseFragment fr;
     }
 
 
-
-    private void initView(){
+    private void initView() {
 
         tvCount = (TextView) findViewById(R.id.tvCount);
         tvCost = (TextView) findViewById(R.id.tvCost);
 
-        tvSubmit  = (TextView) findViewById(R.id.tvSubmit);
+        tvSubmit = (TextView) findViewById(R.id.tvSubmit);
 
 
         imgCart = (ImageView) findViewById(R.id.imgCart);
         anim_mask_layout = (RelativeLayout) findViewById(R.id.containerLayout);
 
-     fr=new AllDishFragment();
+        fr = new AllDishFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("mmid", mmid);
+        bundle.putInt("cid", cid);
+        fr.setArguments(bundle);
         getSupportFragmentManager()
-                .beginTransaction() .add(R.id.fragment, fr).commit();
-
-
-
-
+                .beginTransaction().add(R.id.fragment, fr).commit();
 
 
     }
 
 
-    public void playAnimation(int[] start_location){
+    public void playAnimation(int[] start_location) {
         ImageView img = new ImageView(this);
         img.setImageResource(R.drawable.button_add);
-        setAnim(img,start_location);
+        setAnim(img, start_location);
     }
 
-    private Animation createAnim(int startX,int startY){
+    private Animation createAnim(int startX, int startY) {
         int[] des = new int[2];
         imgCart.getLocationInWindow(des);
 
         AnimationSet set = new AnimationSet(false);
 
-        Animation translationX = new TranslateAnimation(0, des[0]-startX, 0, 0);
+        Animation translationX = new TranslateAnimation(0, des[0] - startX, 0, 0);
         translationX.setInterpolator(new LinearInterpolator());
-        Animation translationY = new TranslateAnimation(0, 0, 0, des[1]-startY);
+        Animation translationY = new TranslateAnimation(0, 0, 0, des[1] - startY);
         translationY.setInterpolator(new AccelerateInterpolator());
-        Animation alpha = new AlphaAnimation(1,0.5f);
+        Animation alpha = new AlphaAnimation(1, 0.5f);
         set.addAnimation(translationX);
         set.addAnimation(translationY);
         set.addAnimation(alpha);
@@ -130,13 +135,14 @@ public BaseFragment fr;
         int[] loc = new int[2];
         vg.getLocationInWindow(loc);
         view.setX(x);
-        view.setY(y-loc[1]);
+        view.setY(y - loc[1]);
         vg.addView(view);
     }
+
     private void setAnim(final View v, int[] start_location) {
 
         addViewToAnimLayout(anim_mask_layout, v, start_location);
-        Animation set = createAnim(start_location[0],start_location[1]);
+        Animation set = createAnim(start_location[0], start_location[1]);
         set.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -150,7 +156,7 @@ public BaseFragment fr;
                     public void run() {
                         anim_mask_layout.removeView(v);
                     }
-                },100);
+                }, 100);
             }
 
             @Override
@@ -162,8 +168,8 @@ public BaseFragment fr;
     }
 
     @Override
-    public void onClick(View v){
-        switch (v.getId()){
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.bottom:
                 showBottomSheet();
                 break;
@@ -172,76 +178,91 @@ public BaseFragment fr;
                 break;
             case R.id.tvSubmit:
                 Toast.makeText(ShoppingCartActivity.this, "结算", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(ShoppingCartActivity.this, OrderActivity.class);
+                Intent intent = new Intent(ShoppingCartActivity.this, PayActivity.class);
+                List<submitOrder.OrderItemBean> orderItems=new ArrayList<submitOrder.OrderItemBean>();
+                for(int i=0;i<selectedList.size();i++)
+                {   GoodsItem item=selectedList.valueAt(i);
+                    submitOrder.OrderItemBean orderItem=new submitOrder.OrderItemBean(item.id,item.count,item.name,item.avator,(float) (item.price));
+                    orderItems.add(orderItem);
 
 
+                }
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("orderitems",(Serializable)orderItems);
+               intent.putExtras(bundle);
+                intent.putExtra("money",cost);
+               intent.putExtra("cname",cname);
+                intent.putExtra("cid",cid);
                 startActivity(intent);
                 break;
             default:
                 break;
         }
     }
+
     //添加商品
-    public void add(GoodsItem item,boolean refreshGoodList){
+    public void add(GoodsItem item, boolean refreshGoodList) {
 
         int groupCount = groupSelect.get(item.typeId);
-        if(groupCount==0){
-            groupSelect.append(item.typeId,1);
-        }else{
-            groupSelect.append(item.typeId,++groupCount);
+        if (groupCount == 0) {
+            groupSelect.append(item.typeId, 1);
+        } else {
+            groupSelect.append(item.typeId, ++groupCount);
         }
 
         GoodsItem temp = selectedList.get(item.id);
-        if(temp==null){
-            item.count=1;
-            selectedList.append(item.id,item);
-        }else{
+        if (temp == null) {
+            item.count = 1;
+            selectedList.append(item.id, item);
+        } else {
             temp.count++;
         }
 
         update(refreshGoodList);
 
     }
+
     //移除商品
-    public void remove(GoodsItem item,boolean refreshGoodList){
+    public void remove(GoodsItem item, boolean refreshGoodList) {
 
         int groupCount = groupSelect.get(item.typeId);
-        if(groupCount==1){
+        if (groupCount == 1) {
             groupSelect.delete(item.typeId);
-        }else if(groupCount>1){
-            groupSelect.append(item.typeId,--groupCount);
+        } else if (groupCount > 1) {
+            groupSelect.append(item.typeId, --groupCount);
         }
 
         GoodsItem temp = selectedList.get(item.id);
-        if(temp!=null){
-            if(temp.count<2){
+        if (temp != null) {
+            if (temp.count < 2) {
                 selectedList.remove(item.id);
-            }else{
+            } else {
                 item.count--;
             }
         }
         update(refreshGoodList);
     }
+
     //刷新布局 总价、购买数量等
-    private void update(boolean refreshGoodList){
+    private void update(boolean refreshGoodList) {
         int size = selectedList.size();
-        int count =0;
-        double cost = 0;
-        for(int i=0;i<size;i++){
+        int count = 0;
+        cost = 0;
+        for (int i = 0; i < size; i++) {
             GoodsItem item = selectedList.valueAt(i);
             count += item.count;
-            cost += item.count*item.price;
+            cost += item.count * item.price;
         }
-
-        if(count<1){
+        Log.e("这回的count", cost+"dd");
+        if (count < 1) {
             tvCount.setVisibility(View.GONE);
-        }else{
+        } else {
             tvCount.setVisibility(View.VISIBLE);
         }
-        if(cost > 0){
+        if (cost > 0) {
 
             tvSubmit.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvSubmit.setVisibility(View.GONE);
 
         }
@@ -250,89 +271,77 @@ public BaseFragment fr;
         tvCount.setText(String.valueOf(count));
 
 
-           // tvTips.setVisibility(View.GONE);
-            tvSubmit.setVisibility(View.VISIBLE);
+        // tvTips.setVisibility(View.GONE);
+      //  tvSubmit.setVisibility(View.VISIBLE);
 
 
         tvCost.setText(nf.format(cost));
-        Log.e("飞扬","dddd");
-//        if(myAdapter!=null && refreshGoodList){
-//            myAdapter.notifyDataSetChanged();
-//        }
-        if(selectAdapter!=null){
+        Log.e("飞扬", "dddd");
+        if( fr instanceof AllDishFragment){
+
+            if(((AllDishFragment) fr).myAdapter!=null && refreshGoodList){
+                ((AllDishFragment) fr).myAdapter.notifyDataSetChanged();
+            }
+            if(((AllDishFragment) fr).typeAdapter!=null){
+                ((AllDishFragment) fr).typeAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        if (selectAdapter != null) {
             selectAdapter.notifyDataSetChanged();
         }
-//        if(typeAdapter!=null){
-//            typeAdapter.notifyDataSetChanged();
-//        }
-Log.e("恨安卓","drtjh");
-        if(fr.bottomSheetLayout.isSheetShowing() && selectedList.size()<1){
+
+        Log.e("恨安卓", "drtjh");
+        if (fr.bottomSheetLayout.isSheetShowing() && selectedList.size() < 1) {
             fr.bottomSheetLayout.dismissSheet();
         }
     }
+
     //清空购物车
-    public void clearCart(){
+    public void clearCart() {
         selectedList.clear();
         groupSelect.clear();
+
         update(true);
 
     }
+
     //根据商品id获取当前商品的采购数量
-    public int getSelectedItemCountById(int id){
+    public int getSelectedItemCountById(int id) {
         GoodsItem temp = selectedList.get(id);
-        if(temp==null){
+        if (temp == null) {
             return 0;
         }
         return temp.count;
     }
+
     //根据类别Id获取属于当前类别的数量
-    public int getSelectedGroupCountByTypeId(int typeId){
+    public int getSelectedGroupCountByTypeId(int typeId) {
         return groupSelect.get(typeId);
     }
     //根据类别id获取分类的Position 用于滚动左侧的类别列表
-//    public int getSelectedGroupPosition(int typeId){
-//        for(int i=0;i<typeList.size();i++){
-//            if(typeId==typeList.get(i).typeId){
-//                return i;
-//            }
-//        }
-//        return 0;
-//    }
-//
-//    public void onTypeClicked(int typeId){
-//        listView.setSelection(getSelectedPosition(typeId));
-//    }
-//
-//    private int getSelectedPosition(int typeId){
-//        int position = 0;
-//        for(int i=0;i<dataList.size();i++){
-//            if(dataList.get(i).typeId == typeId){
-//                position = i;
-//                break;
-//            }
-//        }
-//        return position;
-//    }
 
-    private View createBottomSheetView(){
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet,(ViewGroup) getWindow().getDecorView(),false);
+
+    private View createBottomSheetView() {
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet, (ViewGroup) getWindow().getDecorView(), false);
         rvSelected = (RecyclerView) view.findViewById(R.id.selectRecyclerView);
         rvSelected.setLayoutManager(new LinearLayoutManager(this));
         TextView clear = (TextView) view.findViewById(R.id.clear);
         clear.setOnClickListener(this);
-        selectAdapter = new SelectAdapter(this,selectedList);
+        selectAdapter = new SelectAdapter(this, selectedList);
         rvSelected.setAdapter(selectAdapter);
         return view;
     }
 
-    private void showBottomSheet(){
-        if(bottomSheet==null){
+    private void showBottomSheet() {
+        if (bottomSheet == null) {
             bottomSheet = createBottomSheetView();
         }
-        if(fr.bottomSheetLayout.isSheetShowing()){
-           fr.bottomSheetLayout.dismissSheet();
-        }else {
-            if(selectedList.size()!=0){
+        if (fr.bottomSheetLayout.isSheetShowing()) {
+            fr.bottomSheetLayout.dismissSheet();
+        } else {
+            if (selectedList.size() != 0) {
                 fr.bottomSheetLayout.showWithSheetView(bottomSheet);
             }
         }

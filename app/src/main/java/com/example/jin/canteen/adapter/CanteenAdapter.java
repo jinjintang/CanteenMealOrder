@@ -9,14 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.example.jin.canteen.R;
-import com.example.jin.canteen.activity.CanteenActivity;
 import com.example.jin.canteen.bean.Canteen;
 import com.squareup.picasso.Picasso;
 
-
 import java.util.List;
+
+import static com.example.jin.canteen.util.GlobalData.canteenMap;
 
 public class CanteenAdapter extends BaseAdapter {
 
@@ -24,7 +23,7 @@ public class CanteenAdapter extends BaseAdapter {
     private Context mContext;
 
 
-    public CanteenAdapter(CanteenActivity mContext, List<Canteen> dataList) {
+    public CanteenAdapter(Context mContext, List<Canteen> dataList) {
         super();
         this.dataList=dataList;
         this.mContext = mContext;
@@ -88,10 +87,10 @@ public class CanteenAdapter extends BaseAdapter {
 
         public void bindData(Canteen item){
             this.item = item;
-            name.setText(item.getNamae());
+            name.setText(item.getName());
 
-            Picasso.with(mContext).load(item.getPicurl()).into(canteenpic);
-
+            Picasso.with(mContext).load(item.getAvatar()).into(canteenpic);
+            canteenMap.put(item.getId(),item.getAvatar());
 
 
         }

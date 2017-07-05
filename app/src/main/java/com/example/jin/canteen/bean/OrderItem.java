@@ -1,77 +1,104 @@
 package com.example.jin.canteen.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jin on 2017/6/14.
  */
 
-public class OrderItem implements Serializable{
-    private String dishname;
-    private String dishurl;
-    private int dishnum;
-    private double price;
+public class OrderItem implements Serializable {
 
-    public String getDishname() {
-        return dishname;
+    /**
+     * id : 1
+     * mid : 1
+     * num : 2
+     * dish : ["10","西红柿"]
+     * oid : 1
+     */
+
+    private int id;
+    private int mid;
+    private int num;
+    private int oid;
+    private List<String> dish;
+    private String mname;
+    private String mavatar;
+    private float mprice;
+
+
+
+    public OrderItem(int mid, int num,String mavatar,String mname,float mprice) {
+        this.mid = mid;
+        this.num = num;
+        this.mname=mname;
+        this.mavatar=mavatar;
+        this.mprice=mprice;
     }
 
-    public void setDishname(String dishname) {
-        this.dishname = dishname;
+    public float getMprice() {
+        return mprice;
     }
 
-    public String getDishurl() {
-        return dishurl;
+    public void setMprice(float mprice) {
+        this.mprice = mprice;
     }
 
-    public void setDishurl(String dishurl) {
-        this.dishurl = dishurl;
+    public String getMname() {
+        return mname;
     }
 
-    public int getDishnum() {
-        return dishnum;
+    public void setMname(String mname) {
+        this.mname = mname;
     }
 
-    public void setDishnum(int dishnum) {
-        this.dishnum = dishnum;
+    public String getMavatar() {
+        return mavatar;
     }
 
-    public double getPrice() {
-        return price;
+    public void setMavatar(String mavatar) {
+        this.mavatar = mavatar;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public int getId() {
+        return id;
     }
 
-    public OrderItem(String dishname, String dishurl, int dishnum, double price, int amount, int order_id) {
-        this.dishname = dishname;
-        this.dishurl = dishurl;
-        this.dishnum = dishnum;
-        this.price = price;
-        this.amount = amount;
-        this.order_id = order_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    private int amount;
-    private int order_id;
-
-
-    public int getOrder_id() {
-        return order_id;
+    public int getMid() {
+        return mid;
     }
 
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+    public void setMid(int mid) {
+        this.mid = mid;
     }
 
-
-    public int getAmount() {
-        return amount;
+    public int getNum() {
+        return num;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public int getOid() {
+        return oid;
+    }
+
+    public void setOid(int oid) {
+        this.oid = oid;
+    }
+
+    public List<String> getDish() {
+        return dish;
+    }
+
+    public void setDish(List<String> dish) {
+        this.dish = dish;
     }
 }
+
 

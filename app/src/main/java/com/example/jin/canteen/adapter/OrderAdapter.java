@@ -3,6 +3,7 @@ package com.example.jin.canteen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,25 +13,32 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.example.jin.canteen.R;
-import com.example.jin.canteen.Request.OrderRequest;
 import com.example.jin.canteen.activity.OrderDetailActivity;
+import com.example.jin.canteen.activity.ShoppingCartActivity;
+import com.example.jin.canteen.bean.Deleteorder;
 import com.example.jin.canteen.bean.Order;
+import com.example.jin.canteen.bean.OrderItem;
+import com.example.jin.canteen.util.GlobalData;
+import com.example.jin.canteen.util.HttpUtils;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class OrderAdapter extends BaseAdapter {
 
-    private ArrayList<Order> dataList;
+    private List<Order> dataList;
     private Context mContext;
 
     private ImageView image;
 
 
-    public OrderAdapter(ArrayList<Order> dataList,Context mContext) {
+    public OrderAdapter(List<Order> dataList,Context mContext) {
         super();
         this.dataList = dataList;
         this.mContext = mContext;
@@ -92,21 +100,34 @@ public class OrderAdapter extends BaseAdapter {
             image=(ImageView) itemView.findViewById(R.id.img);
             button=(Button)itemView.findViewById(R.id.delete);
             order_view=(View)itemView.findViewById(R.id.ordersection);
+
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.e("按了食堂头像","dd");
+                    Intent intent = new Intent(mContext, ShoppingCartActivity.class);
+
+                    intent.putExtra("cid", item.getCid());
+                    mContext.startActivity(intent);
+
+
                 }
             });
      order_view.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
 
-
-             Intent intent=new Intent(mContext,OrderDetailActivity.class);
-             intent.putExtra("OrderId",item.getOrder_id());
+             Log.e("我爱你红梅品格","我带就打了估计");
+             List<OrderItem> orderItems=item.getOrderitems();
+             Log.e("数据发送前","d"+orderItems.toString());
+             Intent intent=new Intent(mContext, OrderDetailActivity.class);
+             Bundle bundle=new Bundle();
+             bundle.putSerializable("orderitems",(Serializable)orderItems);
+             intent.putExtras(bundle);
              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
              mContext.startActivity(intent);
+
+
 
 
          }
@@ -115,8 +136,17 @@ button.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         Log.e("按了删除键","ddd");
+
+        final Deleteorder deleteorder=new Deleteorder(2,item.getId());
+        Log.e("发送删除订单的数据",new Gson().toJson(deleteorder));
+        new Thread() {
+            public void run() {
+
+                 HttpUtils.sendPostUrl(GlobalData.URL + "orderes",new Gson().toJson(deleteorder), "utf8");
+//              mHandler.sendEmptyMessage(1);
+            }
+        }.start();
         dataList.remove(item);
-        OrderRequest.deleteorder(item.getOrder_id());
         notifyDataSetChanged();
     }
 });
@@ -126,11 +156,18 @@ button.setOnClickListener(new View.OnClickListener() {
 
         public void bindData(Order item){
             this.item = item;
-            name.setText(item.getCanteenname());
-            Picasso.with(mContext).load(item.getCanteenurl()).into(image);
-            price.setText(""+item.getOrder_price());
-            time.setText(""+item.getOrder_time());
+           name.setText(item.getCname());
+           Log.e("食堂头像","dd"+item.getCavatar());
+            Picasso.with(mContext).load(item.getCavatar()).into(image);
+            price.setText(""+item.getPrice());
+            time.setText(""+item.getTime());
+            SimpleDateFormat sdf =new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+            Calendar cal=Calendar.getInstance();
 
+            cal.add(Calendar.DATE,-1);
+            Date time=cal.getTime();
+            String str = sdf.format(time);
+            if(str.compareTo(item.getTime())<0)button.setVisibility(View.GONE);
         }
 
 

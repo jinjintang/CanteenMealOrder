@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#ECF0F1">
+
+    <include layout="@layout/top_bar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="45dp"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout style="@style/wrap_layout">
+            <!-- 上圆角-->
+            <LinearLayout style="@style/top_layout"
+                android:id="@+id/person_info">
+
+                <TextView
+                    style="@style/usertext"
+                    android:text="校园卡余额" />
+
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+
+            <!-- 分割线 -->
+            <View style="@style/bg_line" />
+            <!-- 无圆角-->
+
+            <View style="@style/bg_line" />
+            <!-- 下圆角-->
+
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/wrap_layout">
+
+            <LinearLayout style="@style/single_layout"
+                android:id="@+id/select_logout">
+
+                <TextView
+                    android:id="@+id/tv_logout"
+                    style="@style/usertext"
+                    android:text="退出登录" />
+
+                <ImageView style="@style/img_arrow" />
+
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

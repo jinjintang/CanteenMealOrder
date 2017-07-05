@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.jin.canteen.R;
-import com.example.jin.canteen.ShoppingCartActivity;
+import com.example.jin.canteen.activity.ShoppingCartActivity;
 import com.example.jin.canteen.bean.GoodsItem;
 
 import java.text.NumberFormat;

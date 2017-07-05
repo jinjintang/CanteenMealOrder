@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="番茄炒蛋"
-                        android:textSize="18dp"
+                        android:textSize="16pt"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -71,6 +71,7 @@
                         android:layout_height="wrap_content"
                         android:text="偏甜口味的上海菜"
                         android:textAlignment="center"
+
                         android:padding="10dp" />
                 </LinearLayout>
 
@@ -83,20 +84,26 @@
 
                     <Button
                         android:id="@+id/addtoshoppingcart"
-                        android:layout_width="30dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:text="加入购物车"
                         android:layout_weight="0.20" />
                 </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
 
+                android:orientation="horizontal"
+                >
                 <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1000px"
+
                     android:id="@+id/comments"
                     >
                 </ListView>
-
+            </LinearLayout>
 
 
             </LinearLayout>

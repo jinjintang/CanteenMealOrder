@@ -20,14 +20,7 @@
             android:id="@+id/tvName"
             android:layout_width="300dp"
             android:layout_height="wrap_content" />
-        <RatingBar android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:stepSize="0.5"
-            android:numStars="5"
-            android:rating="3.5"
-            android:isIndicator="true"
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-            android:layout_height="wrap_content" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
