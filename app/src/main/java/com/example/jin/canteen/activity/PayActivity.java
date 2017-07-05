@@ -59,23 +59,31 @@ private TextView price;
                 final submitOrder order=new submitOrder(eattime,cid,uid,(float)yuan,0,cname,canteenMap.get(cid),orderitems);
                 new Thread() {
                     public void run() {
+
                         try {
                         Gson g= new Gson();
 
                         String userinfo=  HttpUtils.sendGet(GlobalData.URL + "users/"+ GlobalData.uid, "utf8");
                        GlobalData.user=g.fromJson(userinfo,User.class);
-                       double money=Double.parseDouble(GlobalData.user.getAccount());
+                        double money=Double.parseDouble(GlobalData.user.getAccount());
                        money-=yuan;
-                       GlobalData.user.setAccount(money+"");
+                       if(money<0){
+                           Toast.makeText(getApplicationContext(),"余额不足",Toast.LENGTH_SHORT).show();
+
+
+                       }
+                            else{
+                            GlobalData.user.setAccount(money+"");
 
 
 
 
                         Log.e("提交订单发送数据",g.toJson(order));
                       String submit=  HttpUtils.sendPostUrl(GlobalData.URL + "orderes", g.toJson(order), "utf8");
-                      Log.e("提交订单返回数据",submit+"不会什么都没有吧");}
+                      Log.e("提交订单返回数据",submit+"不会什么都没有吧");
+
+                          mHandler.sendEmptyMessage(1);}}
                         catch (Exception e){Log.e("错了",e.toString());}
-                          mHandler.sendEmptyMessage(1);
                     }
                 }.start();
 
