@@ -167,7 +167,13 @@ button.setOnClickListener(new View.OnClickListener() {
             cal.add(Calendar.DATE,-1);
             Date time=cal.getTime();
             String str = sdf.format(time);
-            if(str.compareTo(item.getTime())<0)button.setVisibility(View.GONE);
+            String str2=" "+item.getTime();
+            if(str.compareTo(str2)<0){
+                Log.e("昨天的时间",str);
+                Log.e("下单的时间",str2);
+
+                button.setVisibility(View.GONE);}
+            else button.setVisibility(View.VISIBLE);
         }
 
 
